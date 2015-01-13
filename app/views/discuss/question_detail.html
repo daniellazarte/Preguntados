@@ -1,0 +1,81 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">               
+        <div class="col-md-offset-2 col-md-8"> 
+            <br>       
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="media">
+                        <a class="pull-left" href="#">
+                        <img src="{{ question.user.url_foto}}" class="img-circle" />
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href=""><span class="usuario">{{ question.user.username }}</span></a>
+                                <small class="pull-right"><span class="glyphicon glyphicon-time"></span> {{ question.created|date('Y-m-d') }}</small>
+                            </h4>
+                            <p>
+                                {{ question.content }}
+                            </p>
+                            <p>
+                                <a href=""><span class="label label-warning pull-right "><span class="glyphicon glyphicon-star"></span> Favoritos </span> </a>
+                                <span class="label pull-right "> </span>
+                                <a href=""><span class="label label-warning pull-right "><span class="glyphicon glyphicon-thumbs-up"></span> Like </span> </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>  
+                <div class="panel-body panel-body-respuesta">
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="color-blanco responder"><span id="icono"></span> Responder:</h4>
+                            <form method="POST">
+                                <textarea class="textarea-responder ocultar" name="content"></textarea>
+                                <input type="submit" class="btn btn-warning pull-right ocultar" value="Responder">    
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>                  
+            </div> 
+
+            <div class="well well-lg">
+               {% for answer in answers %}
+                   <div class="media ">
+                        <a class="pull-left" href="#">
+                        <img src="{{ answer.user.url_foto }}" class="img-circle" />
+                        </a>
+                        <div class="media-body">
+                            <h4 class="media-heading">
+                                <a href=""><span class="usuario">{{ answer.user.username }} </span></a>
+                                <small class="pull-right"><span class="glyphicon glyphicon-time"></span> {{ answer.created|date('Y-m-d')}}</small>
+                            </h4>
+                            <p>
+                                {{ answer.content }}
+                            </p>
+                        </div>
+                    </div>
+               {% endfor %}
+              
+            </div>
+        </div>
+    </div>        
+</div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $('.ocultar').hide();
+
+        $('.responder').click(function(){
+            $('.textarea-responder').css({'margin-top':'8px'});
+            $('.ocultar').slideToggle(150);
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "../base.html" %}
+
+{% block content %}
+
+<div class="container">
+	<br>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="row">
+				<div class="col-md-9">
+					<div class="panel panel-default">
+					  <div class="panel-body panel-chat-body">
+					    <div class="panel panel-default panel-default-customize" >
+						  <div class="panel-body panel-body-customize" >
+						  	<div class="coloca-mensaje">
+
+						  	</div>
+						  </div>
+						</div>
+					  </div>
+					  <div class="panel-footer">
+					  	<div class="row">
+					  		<div class="col-md-10" style="padding-right:5px">
+					  			<input type="text" class="form-control"  id="dialog" placeholder="Escribe">
+					  		</div>
+					  		<div class="col-md-2" style="padding-left:5px">
+					  			<button id="boton" type="button" class="btn btn-warning col-md-12" id="enviar-chat">Enviar</button>
+					  		</div>
+					  	</div>
+					  </div>
+					</div>
+				</div>
+				<div class="col-md-3 conectados">
+					<div class="panel panel-default">
+						<div class="panel-body panel-body-conectados">
+							<span style="color:#ABABAB">Gentita</span>
+							<ul class="nav nav-pills nav-stacked" id ="conectados">
+								{% for user in users %}
+									<li>
+									   <a href="#">
+									   		<div class="media media-conectados">
+									   			<a class="pull-left" href="#">
+									   				<img class="media-object" src="{{ user.url_foto }}" width="20px" height="20px">
+									   			</a>
+									   			<div class="media-body"><small><b>{{ user.username }}</b></small></div>
+									   		</div>
+									   	</a>
+									</li>	
+								{% endfor %}
+							</ul>
+							<a href="/logout">Salir del Chat</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+		</div>
+	</div>
+	
+</div>
+
+{% endblock %}
+
+{% block js %}
+	<script>
+		var socket = io('/chat');
+
+		$(document).on("ready", function(){
+			var datos = {
+				username : '{{ user }}',
+				foto : '{{ url_foto }}'
+			}
+			socket.emit('nuevo usuario', datos);
+		});
+
+		socket.on('devolviendo usuario', function(data){
+			var html = '<li><a href="#"><div class="media media-conectados"><a class="pull-left" href="#"><img class="media-object" src="' + data.foto + '" width="20px" height="20px"></a><div class="media-body"><small><b>' + data.username + '</b></small></div></div></a></li>';
+
+			$('#conectados').append(html);
+		});
+
+		socket.on('logout', function(data){
+			$('#conectados li').each(function (i, item){
+				username = item.innerText.replace(/\s/g,'');
+				if(username == data.username){
+					$(item).remove();
+				}
+
+			})
+
+
+		});
+
+		//Enviar mensaje
+		$('#boton').on('click', function(){
+			var datos = {
+				user : ' {{ user }}',
+				url_foto : '{{ url_foto }}',
+				message : $('#dialog').val()
+			}
+
+			socket.emit('nuevo mensaje', datos);
+
+		});
+
+		socket.on('devolviendo mensaje', function(data){
+			agregarChat(data);
+
+		});
+
+
+
+
+
+		function agregarChat(data){
+
+			var ahora = new Date();
+			var stringAhora = ahora.toLocaleString(); 	
+
+			if(ahora.getHours()>=12){
+				var h = stringAhora+' pm';
+			}
+			else{
+				var h = stringAhora+' am';
+			}
+
+			$('.coloca-mensaje').append('<div class="media media-chat"><a class="pull-left" href="#"><img class="media-object" src="' + data.url_foto + '" width="40px" height="40px"></a><div class="media-body"><h5 class="media-heading">' + data.user + ' - <span class="chat-fecha">'+h+'</span></h5><span class="chat-content">'+ data.message +'</span></div></div>');	
+
+			var alto = $('.coloca-mensaje').height();
+			var altoChat = $('.panel-body-customize').height();
+
+			var barraScroll = alto-altoChat;
+
+			if(barraScroll>0){
+				$('.panel-body-customize').scrollTop(barraScroll);
+			}
+
+			$("#dialog").val("");
+			
+
+		}
+		
+	</script>
+{% endblock %}

@@ -1,0 +1,139 @@
+{% extends '../base.html' %}
+
+{% block content %}
+
+	<div class="jumbotron">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-offset-2 colmd-6">
+				<span class='head-tittle'><h1>Bienvenido a Preguntados¿?</h1> </span>
+				<p>Bienvenido al Sistema de Discuciones para programadores :D</p>
+				<p>
+					<a href="" class='btn btn-btn btn-warning btn-lg' data-toggle='modal' data-target='#myModal'>Haz tu pregunta</a>
+				</p>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-mdoffset-3 col-md-6">
+			<div class="btn-group">
+				<button type='button' class='btn btn-default'>Todas</button>
+				<button type='button' class='btn btn-default'>Top 5</button>
+				<button type='button' class='btn btn-default'>Favoritos</button>
+			</div>
+
+			<div class="media border">
+				
+			</div>
+			<div id="question" style="padding-top: 10px">
+
+			{% for question in questions %}
+			<div class="media border">
+				<a href="#" class="pull-left">
+					<img src="{{ question.user.url_foto }}" alt="" class='img-circle'>
+				</a>
+				
+				<div class="media-body">
+
+					<h4 class='media-heading'>
+						<a href=""><span class='usuario'>{{ question.user.username }}</span></a>
+						<h1>{{ question.title }}</h1>
+						<small class='pull-right'><span class='glyphicon glyphicon-time'></span>{{ question.created|date('Y-m-d') }}</small>
+
+
+					</h4>
+					<p>
+					<a href="/pregunta/{{ question.slug }}">{{ question.content }}
+					</a>
+					</p>
+					<p>
+						<a href="">
+							<span class='label label-warning pull-right'></span>
+							<span class='glyphicon glyphicon-star'>Favoritos</span>
+						</a>
+
+						<span class='label pull-right'></span>
+							<a href="">
+							<span class='label label-warning pull-right'></span>
+							<span class='glyphicon glyphicon-thumbs-up'>Like</span>
+						</a>
+					</p>
+
+
+
+				</div>
+				
+			</div>
+
+			{% endfor %}
+		</div>
+			
+
+
+
+				
+			</div>
+		</div>
+	</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">Formulario de Pregunta</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" role="form" method="post" action="/guardar-pregunta">
+          <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">Título:</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="inputtitulo" placeholder="Título" name="title">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">Contenido:</label>
+            <div class="col-sm-10">
+              <textarea name="content" class="form-control" id="inputcontenido" rows="3"></textarea>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-btn" data-dismiss="modal">Atrás</button>
+        <input type="submit" class="btn btn-btn btn-warning" value="Preguntar">
+      </div>
+      </form>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- ............. -->
+
+
+
+
+{% endblock %}
+
+
+{% block js %}
+<script>
+	$('#myModal').modal('hide');
+</script>
+
+<script>
+	var socket = io();
+	socket.on('preguntando' , function(data){
+	console.log(data);
+		 var html = '<div class="media border"><a class="pull-left" href="#"><img src="'+data.url_foto+'" class="img-circle" /></a><div class="media-body"><h4 class="media-heading"><a href="/detalle"><span class="usuario">'+data.username+'</span></a><h1>'+data.title+'</h1><small class="pull-right"><span class="glyphicon glyphicon-time"></span> '+data.created+'</small></h4><p><a href="/pregunta/{{ question.slug }}">'+data.content+'</a></p><p><a href=""><span class="label label-warning pull-right "><span class="glyphicon glyphicon-star"></span> Favoritos </span> </a><span class="label pull-right "> </span><a href=""><span class="label label-warning pull-right "><span class="glyphicon glyphicon-thumbs-up"></span> Like </span> </a></p></div></div>';
+
+		 $('#question').prepend(html);
+
+	});
+</script>
+{% endblock %}
+
+

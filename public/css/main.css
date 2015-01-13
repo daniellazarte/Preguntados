@@ -1,0 +1,65 @@
+body{
+    background: #eee;
+}
+
+.head-tittle{
+    color: white;x
+    font-size : 2em;
+}
+
+.border
+{
+    list-style: none;
+    margin: 10px 10px 0 0;
+    border-bottom: 1px dotted #B3A9A9;
+    padding-bottom: 10px;
+}
+
+.jumbotron{    
+    background-image: url(../img/pattern2.png);
+}
+
+.sin-margen-inferior{
+    margin-bottom: 0;
+}
+
+.titulo{
+    color: #11a9cc;
+    font-weight: bold;
+    size:1.5em;
+}
+
+.usuario{
+    color: #5d5d5d;
+    text-decoration: none;
+    outline: 0;
+}
+
+.textarea-responder{
+    border-radius: 3px;
+    width: 100%;
+    height: 100px;
+    margin-bottom: 8px;
+}
+
+.color-blanco{
+    color: white;
+    margin: 0;
+}
+
+.color-blanco:hover{
+    cursor: pointer;
+}
+
+.panel-body-respuesta{
+    background-color: rgba(7, 135, 195, 0.56);
+    border-radius: 0 0 4px 4px;
+}
+
+.titulo{
+	color:#11a9cc;
+	font-weight: bold;
+	size:1.5em;
+
+}
+

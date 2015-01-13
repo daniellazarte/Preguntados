@@ -1,0 +1,27 @@
+{
+  "name": "CursoNode",
+  "description": "Este es el curso de devcode.la",
+  "version": "0.0.1-5",
+  "author": "Daniel Lazarte",
+  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "cookie-parser": "^1.3.3",
+    "express": "^4.10.7",
+    "express-session": "^1.10.0",
+    "mongoose": "^3.8.21",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-twitter": "^1.0.2",
+    "slugs": "^0.1.3",
+    "socket.io": "^1.2.1",
+    "swig": "^1.4.2"
+  },
+  "subdomain": "Preguntados",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
